@@ -16,6 +16,5 @@ make
 ## TODO
 
 - [x] 实现 global 对象
-- [ ] 实现 global->console 对象 
-- [ ] 实现 global->console->console->log 方法
-- [ ] 实现 fs 模块
+- [x] 实现 global->console->console->log 方法
+- [ ] 实现 commonJs 模块加载

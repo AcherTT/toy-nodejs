@@ -1,8 +1,10 @@
 #include <string>
 #include <iostream>
-#include "include/v8/libplatform/libplatform.h"
-#include "include/v8/v8.h"
-#include "include/utils/file.h"
+#include "libplatform/libplatform.h"
+#include "v8.h"
+#include "src/utils/utils.h"
+#include "src/core/include/console.h"
+#include "src/core/include/init.h"
 
 using namespace v8;
 
@@ -29,28 +31,26 @@ int main(int argc, char *argv[])
 
         Local<ObjectTemplate> global = ObjectTemplate::New(isolate);
         Local<Context> context = Context::New(isolate, nullptr, global);
-
         Context::Scope context_scope(context);
 
         Local<Object> globalInstance = context->Global();
         globalInstance->Set(context, String::NewFromUtf8Literal(isolate, "global", NewStringType::kNormal), globalInstance).Check();
+        ToyNode::MyNode::init(isolate, globalInstance);
 
+        // 运行js脚本
         {
-            const std::string sourceStr = Utils::File::readFileToString("toy-node.js");
+            const std::string sourceStr = Utils::File::readFileToString("../toy-node.js");
             Local<String> source = String::NewFromUtf8(isolate, sourceStr.c_str(),
                                                        NewStringType::kNormal,
                                                        sourceStr.size())
                                        .ToLocalChecked();
 
             Local<Script> script = Script::Compile(context, source).ToLocalChecked();
-
             Local<Value> result = script->Run(context).ToLocalChecked();
-            String::Utf8Value utf8(isolate, result);
-            std::cout << *utf8 << std::endl;
         }
     }
 
-    // Dispose the isolate and tear down V8.
+    // 销毁
     isolate->Dispose();
     V8::Dispose();
     V8::ShutdownPlatform();
