@@ -1,4 +1,13 @@
-console.log('测试第一个打印输出');
+console.log(
+    '测试第一个打印输出',
+    new Date(),
+    {
+        info: '测试object打印',
+        arr: [1, 2, '23'],
+        object: { info: '第二层' },
+        bool: true
+    }
+);
 
 function add(a, b) {
     return new Promise((resolve, reject) => {
@@ -12,7 +21,7 @@ function add(a, b) {
 }
 
 (async function () {
-    console.log('测试第二个打印输出');
+    console.log('测试函数打印：', add);
     const result = await add(1, 2);
     console.log(JSON.stringify(result));
     const intervalId = timeUtils.setInterval(() => {
