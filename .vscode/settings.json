@@ -51,5 +51,9 @@
         "ratio": "cpp",
         "thread": "cpp",
         "cinttypes": "cpp"
-    }
+    },
+    "cSpell.words": [
+        "EVBREAK",
+        "libev"
+    ]
 }

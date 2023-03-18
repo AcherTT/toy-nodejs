@@ -5,6 +5,7 @@
 #include "src/utils/utils.h"
 #include "src/core/include/console.h"
 #include "src/core/include/init.h"
+#include <ev.h>
 
 using namespace v8;
 
@@ -14,7 +15,7 @@ int main(int argc, char *argv[])
     setvbuf(stdout, nullptr, _IONBF, 0);
     setvbuf(stderr, nullptr, _IONBF, 0);
 
-    V8::InitializeICUDefaultLocation(argv[0]);
+    // V8::InitializeICUDefaultLocation(argv[0]); -- 直接使用系统的icu库
     V8::InitializeExternalStartupData(argv[0]);
 
     std::unique_ptr<Platform> platform = platform::NewDefaultPlatform();
@@ -48,6 +49,7 @@ int main(int argc, char *argv[])
             Local<Script> script = Script::Compile(context, source).ToLocalChecked();
             Local<Value> result = script->Run(context).ToLocalChecked();
         }
+        ev_run(EV_DEFAULT_ 0);
     }
 
     // 销毁
