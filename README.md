@@ -3,8 +3,8 @@
 
 ## 依赖
 
-1. v8
-2. libev
+1. v8，版本与 node18.15.0 一致使用 10.2 版本
+2. libev，使用 4.0 版本
 
 
 ## 编译方式
@@ -25,9 +25,10 @@ make
 - [x] 实现 global->console->console->log 方法
 - [x] 实现 timeUtils->setTimeout clearTimeout 方法
 - [x] 实现 timeUtils->setInterval clearInterval 方法
-- [x] 实现 buffer 数据结构，可参考nodejs的实现方法，这是实现其余模块的基础
+- [x] 实现 buffer 数据结构
 - [ ] 实现 fs 模块 readFileAsync、writeFileAsync方法
-- [ ] 实现 commonJs 模块加载，可以基于fs模块纯js实现
+- [ ] 实现 commonJs 模块加载机制
+- [ ] 实现 process 数据结构
 - [ ] 实现 event 模块
 - [ ] 实现 net 模块
 - [ ] 实现 http 模块
