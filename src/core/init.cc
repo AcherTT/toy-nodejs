@@ -1,7 +1,8 @@
+#include "../utils/utils.h"
 #include "include/init.h"
 #include "include/console.h"
 #include "include/timeUtils.h"
-#include "../utils/utils.h"
+#include "include/buffer.h"
 
 using namespace v8;
 using namespace Utils;
@@ -12,6 +13,7 @@ void MyNode::init(v8::Isolate *isolate, Local<Object> &global)
 {
     MyNode::initConsole(isolate, global);
     MyNode::initTimeUtils(isolate, global);
+    MyNode::initBuffer(isolate, global);
 }
 
 void MyNode::initConsole(v8::Isolate *isolate, Local<Object> &global)
@@ -30,4 +32,13 @@ void MyNode::initTimeUtils(v8::Isolate *isolate, Local<Object> &global)
     SetModule::setModuleFunction(isolate, timeUtils, "clearInterval", TimeUtils::clearInterval);
 
     SetModule::setObjectValue(isolate, global, "timeUtils", timeUtils);
+}
+
+void MyNode::initBuffer(v8::Isolate *isolate, Local<Object> &global)
+{
+    Local<ObjectTemplate> buffer = ObjectTemplate::New(isolate);
+    SetModule::setModuleFunction(isolate, buffer, "from", Buffer::from);
+    SetModule::setModuleFunction(isolate, buffer, "clean", Buffer::clean);
+
+    SetModule::setObjectValue(isolate, global, "Buffer", buffer);
 }

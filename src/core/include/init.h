@@ -11,5 +11,6 @@ namespace ToyNode
         static void init(Isolate *isolate, Local<Object> &global);
         static void initConsole(Isolate *isolate, Local<Object> &global);
         static void initTimeUtils(Isolate *isolate, Local<Object> &global);
+        static void initBuffer(Isolate *isolate, Local<Object> &global);
     };
 }

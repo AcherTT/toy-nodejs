@@ -12,7 +12,6 @@ console.log(
 function add(a, b) {
     return new Promise((resolve, reject) => {
         const id = timeUtils.setTimeout(() => {
-            console.log('测试第三个打印输出');
             resolve({ result: a + b });
         }, 3000);
 
@@ -20,7 +19,7 @@ function add(a, b) {
     })
 }
 
-(async function () {
+async function timesTest() {
     console.log('测试函数打印：', add);
     const result = await add(1, 2);
     console.log(JSON.stringify(result));
@@ -38,4 +37,17 @@ function add(a, b) {
         timeUtils.clearInterval(intervalId);
     }, 10000);
     timeUtils.clearTimeout(timeoutId2);
+}
+
+function testBuffer() {
+    const buffer = Buffer.from('测试buffer');
+    console.log(buffer.toString());
+}
+
+(async function () {
+    // 定时器测试
+    await timesTest();
+
+    // buffer测试
+    testBuffer();
 })();
