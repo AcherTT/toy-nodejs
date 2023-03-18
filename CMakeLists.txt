@@ -16,6 +16,7 @@ link_directories(${LIBEV_LIB_PATH})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/v8)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/libev)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/common)
 
 file(GLOB SOURCES "src/core/*.cc" "src/utils/*.cc" "myNode.cc")
 

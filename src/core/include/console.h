@@ -7,7 +7,7 @@ namespace InternalModule
     class Console
     {
     private:
-        static void _log(v8::Isolate *isolate, v8::Local<String> &str);
+        static void _log(v8::Isolate *isolate, v8::Local<v8::String> &str);
         static void _log(std::string str);
         static void _log(bool value);
 

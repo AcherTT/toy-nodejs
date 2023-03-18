@@ -1,6 +1,7 @@
 #include "v8.h"
 #include <string>
 #include "utils.h"
+#include "macroDefinition.h"
 
 using namespace v8;
 
@@ -9,7 +10,7 @@ void Utils::SetModule::setModuleFunction(Isolate *isolate,
                                          const std::string name,
                                          FunctionCallback callback)
 {
-    recv->Set(String::NewFromUtf8(isolate, name.c_str(), NewStringType::kNormal).ToLocalChecked(),
+    recv->Set(TO_STRING(isolate, name.c_str()),
               FunctionTemplate::New(isolate, callback));
 }
 
@@ -20,7 +21,7 @@ void Utils::SetModule::setObjectValue(Isolate *isolate,
                                       Local<v8::ObjectTemplate> value)
 {
     const Local<Context> context = isolate->GetCurrentContext();
-    recv->Set(context, String::NewFromUtf8(isolate, name.c_str(), NewStringType::kNormal).ToLocalChecked(),
+    recv->Set(context, TO_STRING(isolate, name.c_str()),
               value->NewInstance(context).ToLocalChecked())
         .FromJust();
 }
