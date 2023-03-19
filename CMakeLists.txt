@@ -12,17 +12,18 @@ add_definitions(-DV8_COMPRESS_POINTERS)
 # 添加库路径
 set(V8_LIB_PATH "lib/v8")
 set(LIBEV_LIB_PATH "lib/libev")
-set(Boost_LIBRARY_DIRS "lib/boost")
 
+# set(Boost_LIBRARY_DIRS "lib/boost")
 link_directories(${V8_LIB_PATH})
 link_directories(${LIBEV_LIB_PATH})
-link_directories(${Boost_LIBRARY_DIRS})
 
+# link_directories(${Boost_LIBRARY_DIRS})
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include/v8
     ${CMAKE_CURRENT_SOURCE_DIR}/include/libev
     ${CMAKE_CURRENT_SOURCE_DIR}/include/common
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/bost
+
+    # ${CMAKE_CURRENT_SOURCE_DIR}/include/bost
 )
 
 # set(Boost_USE_STATIC_LIBS ON)
@@ -41,5 +42,4 @@ target_link_libraries(
     v8_libplatform
     dl
     pthread
-    boost_thread
 )
