@@ -50,10 +50,12 @@
         "random": "cpp",
         "ratio": "cpp",
         "thread": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "*.ipp": "cpp"
     },
     "cSpell.words": [
         "EVBREAK",
-        "libev"
+        "libev",
+        "threadpool"
     ]
 }
