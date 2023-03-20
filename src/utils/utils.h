@@ -22,5 +22,9 @@ namespace Utils
                                    v8::Local<v8::Object> recv,
                                    const std::string name,
                                    v8::Local<v8::ObjectTemplate> value);
+        static void setObjectValue(v8::Isolate *isolate,
+                                   v8::Local<v8::Object> recv,
+                                   const std::string name,
+                                   v8::Local<v8::Object> value);
     };
 }

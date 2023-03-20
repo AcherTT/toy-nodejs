@@ -1,16 +1,18 @@
 #pragma once
 #include "v8.h"
-
-using namespace v8;
+#include "macroDefinition.h"
 
 namespace ToyNode
 {
+
     class MyNode
     {
     public:
-        static void init(Isolate *isolate, Local<Object> &global);
-        static void initConsole(Isolate *isolate, Local<Object> &global);
-        static void initTimeUtils(Isolate *isolate, Local<Object> &global);
-        static void initBuffer(Isolate *isolate, Local<Object> &global);
+        static void init(int argc, char *argv[], COMMON_INIT_ARGS);
+        static void initConsole(COMMON_INIT_ARGS);
+        static void initTimeUtils(COMMON_INIT_ARGS);
+        static void initBuffer(COMMON_INIT_ARGS);
+        static void initCommonJs(COMMON_INIT_ARGS);
+        static void initProcess(int argc, char *argv[], COMMON_INIT_ARGS);
     };
 }

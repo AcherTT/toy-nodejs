@@ -6,6 +6,7 @@
 #include "src/core/include/console.h"
 #include "src/core/include/init.h"
 #include <ev.h>
+#include "macroDefinition.h"
 
 using namespace v8;
 
@@ -34,9 +35,17 @@ int main(int argc, char *argv[])
         Local<Context> context = Context::New(isolate, nullptr, global);
         Context::Scope context_scope(context);
 
+        // 初始化内部模块
+        Local<Object> InternalModuleObject = Object::New(isolate);
+        ToyNode::MyNode::init(argc, argv, isolate, InternalModuleObject);
+
+        // global
         Local<Object> globalInstance = context->Global();
-        globalInstance->Set(context, String::NewFromUtf8Literal(isolate, "global", NewStringType::kNormal), globalInstance).Check();
-        ToyNode::MyNode::init(isolate, globalInstance);
+        globalInstance->Set(context,
+                            TO_STRING(isolate, "InternalModuleObject"),
+                            InternalModuleObject)
+            .Check();
+        globalInstance->Set(context, TO_STRING(isolate, "global"), globalInstance).Check();
 
         // 运行js脚本
         {
@@ -49,7 +58,7 @@ int main(int argc, char *argv[])
             Local<Script> script = Script::Compile(context, source).ToLocalChecked();
             Local<Value> result = script->Run(context).ToLocalChecked();
         }
-        ev_run(EV_DEFAULT_ 0);
+        ev_run(EV_DEFAULT_ 0); // 启动事件循环
     }
 
     // 销毁

@@ -25,3 +25,13 @@ void Utils::SetModule::setObjectValue(Isolate *isolate,
               value->NewInstance(context).ToLocalChecked())
         .FromJust();
 }
+
+void Utils::SetModule::setObjectValue(Isolate *isolate,
+                                      Local<Object> recv,
+                                      const std::string name,
+                                      Local<v8::Object> value)
+{
+    const Local<Context> context = isolate->GetCurrentContext();
+    recv->Set(context, TO_STRING(isolate, name.c_str()), value)
+        .FromJust();
+}
