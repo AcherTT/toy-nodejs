@@ -16,7 +16,7 @@ void Utils::SetModule::setModuleFunction(Isolate *isolate,
 
 // 设置对象的属性，属性为非函数
 void Utils::SetModule::setObjectValue(Isolate *isolate,
-                                      Local<Object> recv,
+                                      Local<Object> &recv,
                                       const std::string name,
                                       Local<v8::ObjectTemplate> value)
 {
@@ -27,7 +27,7 @@ void Utils::SetModule::setObjectValue(Isolate *isolate,
 }
 
 void Utils::SetModule::setObjectValue(Isolate *isolate,
-                                      Local<Object> recv,
+                                      Local<Object> &recv,
                                       const std::string name,
                                       Local<v8::Object> value)
 {

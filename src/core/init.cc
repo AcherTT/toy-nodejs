@@ -51,7 +51,7 @@ void MyNode::initBuffer(COMMON_INIT_ARGS)
 void MyNode::initCommonJs(COMMON_INIT_ARGS)
 {
     Local<ObjectTemplate> commonJs = ObjectTemplate::New(isolate);
-    SetModule::setModuleFunction(isolate, commonJs, "require", CommonJSModule::require);
+    SetModule::setModuleFunction(isolate, commonJs, "compare", CommonJSModule::compare);
 
     SetModule::setObjectValue(isolate, InternalModuleObject, "CommonJSModule", commonJs);
 }

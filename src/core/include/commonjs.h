@@ -6,6 +6,6 @@ namespace InternalModule
     class CommonJSModule
     {
     public:
-        static void require(V8_FUNCTION_ARGS);
+        static void compare(V8_FUNCTION_ARGS);
     };
 };
