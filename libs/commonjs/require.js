@@ -1,15 +1,22 @@
 InternalModuleObject.moduleCache = new Map();
 
-// TODO 临时使用路径作为 key，后续需要使用 module id
+// 使用绝对路径作为id
 function _require(pathUrl) {
-    if (InternalModuleObject.moduleCache.has(pathUrl))
-        return InternalModuleObject.moduleCache.get(pathUrl);
+    InternalModuleObject.console.log(`module: ${module.currentPath}`)
+    const currentPath = pathUrl[0] === '/' ? pathUrl : `${module.currentPath}/${pathUrl}`;
 
-    const _module = {
+    if (InternalModuleObject.moduleCache.has(currentPath))
+        return InternalModuleObject.moduleCache.get(currentPath).exports;
+
+    const currentModule = {
         exports: {},
+        currentPath
     };
-    require(pathUrl).call(null, _require, _module, _module.exports);
-    return _module.exports;
+
+    console.log(`currentModule.currentPath: ${currentModule.currentPath}`)
+    require(currentModule.currentPath).call(null, _require, currentModule, currentModule.exports);
+    InternalModuleObject.moduleCache.set(currentPath, currentModule);
+    return currentModule.exports;
 }
 
 module.exports = {

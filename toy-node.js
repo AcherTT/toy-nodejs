@@ -3,6 +3,7 @@ const { timeUtils, Buffer, CommonJSModule, process } = InternalModuleObject
 function initModule() {
     const module = {
         exports: {},
+        currentPath: process.pwd,
     };
     const requireFunction = CommonJSModule.compare('../libs/commonjs/require.js')
     requireFunction.call(null, CommonJSModule.compare, module, module.exports);

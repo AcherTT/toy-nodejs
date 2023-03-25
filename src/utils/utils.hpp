@@ -8,6 +8,7 @@ namespace Utils
     {
     public:
         static std::string readFileToString(const std::string &filepath);
+        static std::string getPwd();
     };
 
     class SetModule

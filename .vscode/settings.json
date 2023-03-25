@@ -51,7 +51,8 @@
         "ratio": "cpp",
         "thread": "cpp",
         "cinttypes": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "codecvt": "cpp"
     },
     "cSpell.words": [
         "EVBREAK",
