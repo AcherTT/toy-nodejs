@@ -8,24 +8,23 @@ using namespace v8;
 
 namespace InternalModule
 {
-    std::map<uint32_t, ev_timer *> TimeUtils::internalPtrMap;
-    std::map<uint32_t, ev_timer *> TimeUtils::timeoutPtrMap;
+    std::map<uint64_t, ev_timer *> TimeUtils::internalPtrMap;
+    std::map<uint64_t, ev_timer *> TimeUtils::timeoutPtrMap;
 
     void TimeUtils::setTimeoutCallback(EV_P_ ev_timer *watcher, int revents)
     {
         Isolate *isolate = Isolate::GetCurrent();
         Local<Context> context = isolate->GetCurrentContext();
         HandleScope handle_scope(isolate);
+
         LoopData *loopData = reinterpret_cast<LoopData *>(watcher->data);
         // 获取参数，即传入的回调函数
-        Local<Function> callback =
-            Local<Function>::New(isolate, *(reinterpret_cast<Persistent<Function> *>(watcher->data)));
-        const MaybeLocal<v8::Value> callResult = callback->Call(context, Null(isolate), 0, nullptr);
+        Local<Function> callback = Local<Function>::New(isolate, *loopData->function);
+        const MaybeLocal<Value> callResult = callback->Call(context, Null(isolate), 0, nullptr);
 
         callback.Clear();
         TimeUtils::timeoutPtrMap.erase(loopData->id);
         ev_timer_stop(EV_A_ watcher);
-        delete loopData;
         delete watcher;
     }
 
@@ -41,14 +40,15 @@ namespace InternalModule
 
         // 创建定时器
         ev_timer *watcher = new ev_timer();
-        watcher->data = new Persistent<Function>(isolate, callback);
-        ev_timer_init(watcher, setTimeoutCallback, timeout / 1000, 0);
 
         // 会有安全问题，这个id不是唯一的，js重复调用setTimeout会删除别的定时器
         const uint64_t id = TimeUtils::timeoutPtrMap.size() + 1;
-        LoopData loopData(id);
         TimeUtils::timeoutPtrMap[id] = watcher;
-        watcher->data = &loopData;
+
+        const auto function = new Persistent<Function>(isolate, callback);
+        LoopData *loopData = new LoopData(id, function);
+        watcher->data = loopData;
+        ev_timer_init(watcher, setTimeoutCallback, timeout / 1000, 0);
 
         ev_timer_start(EV_DEFAULT_ watcher);
 
@@ -82,9 +82,10 @@ namespace InternalModule
         Isolate *isolate = Isolate::GetCurrent();
         Local<Context> context = isolate->GetCurrentContext();
         HandleScope handle_scope(isolate);
-        Local<Function> callback =
-            Local<Function>::New(isolate, *(reinterpret_cast<Persistent<Function> *>(watcher->data)));
-        const MaybeLocal<v8::Value> callResult = callback->Call(context, Null(isolate), 0, nullptr);
+        LoopData *loopData = reinterpret_cast<LoopData *>(watcher->data);
+        Local<Function> callback = Local<Function>::New(isolate, *loopData->function);
+        v8::String::Utf8Value code(isolate, callback->GetName());
+        const MaybeLocal<Value> callResult = callback->Call(context, Null(isolate), 0, nullptr);
     }
 
     void TimeUtils::setInterval(const FunctionCallbackInfo<Value> &args)
@@ -97,14 +98,13 @@ namespace InternalModule
         double timeout = args[1]->NumberValue(context).FromJust();
 
         ev_timer *watcher = new ev_timer();
-        watcher->data = new Persistent<Function>(isolate, callback);
-        ev_timer_init(watcher, setIntervalCallback, timeout / 1000, timeout / 1000);
-
         const uint64_t id = TimeUtils::internalPtrMap.size() + 1;
         TimeUtils::internalPtrMap[id] = watcher;
-        LoopData loopData(id);
-        watcher->data = &loopData;
 
+        const auto function = new Persistent<Function>(isolate, callback);
+        LoopData *loopData = new LoopData(id, function);
+        watcher->data = loopData;
+        ev_timer_init(watcher, setIntervalCallback, timeout / 1000, timeout / 1000);
         ev_timer_start(EV_DEFAULT_ watcher);
 
         Local<Number> jsValue = Number::New(Isolate::GetCurrent(), static_cast<double>(id));

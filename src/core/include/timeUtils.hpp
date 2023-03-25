@@ -9,8 +9,8 @@ namespace InternalModule
     {
     public:
         // 用于保存定时器的指针
-        static std::map<uint32_t, ev_timer *> internalPtrMap;
-        static std::map<uint32_t, ev_timer *> timeoutPtrMap;
+        static std::map<uint64_t, ev_timer *> internalPtrMap;
+        static std::map<uint64_t, ev_timer *> timeoutPtrMap;
 
     public:
         static void setTimeoutCallback(EV_P_ ev_timer *watcher, int revents);
