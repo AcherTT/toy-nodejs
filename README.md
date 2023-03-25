@@ -28,7 +28,7 @@ make
 - [x] 实现 buffer 数据结构
 - [ ] 实现 path 模块
 - [ ] 实现 fs 模块 readFileAsync、writeFileAsync方法
-- [x] 实现 commonJs 模块加载机制
+- [ ] 实现 commonJs 模块加载机制 路径问题还没解决
 - [x] 实现 process 数据结构
 - [ ] 实现 event 模块
 - [ ] 实现 net 模块
