@@ -1,6 +1,6 @@
-#include "include/process.h"
+#include "include/process.hpp"
 #include "v8.h"
-#include "macroDefinition.h"
+#include "macroDefinition.hpp"
 
 namespace InternalModule
 {

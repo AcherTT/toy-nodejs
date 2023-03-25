@@ -1,5 +1,6 @@
+#pragma once
 #include "v8.h"
-#include "macroDefinition.h"
+#include "macroDefinition.hpp"
 
 namespace InternalModule
 {

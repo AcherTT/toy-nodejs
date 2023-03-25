@@ -2,11 +2,11 @@
 #include <iostream>
 #include "libplatform/libplatform.h"
 #include "v8.h"
-#include "src/utils/utils.h"
-#include "src/core/include/console.h"
-#include "src/core/include/init.h"
+#include "src/utils/utils.hpp"
+#include "src/core/include/console.hpp"
+#include "src/core/include/init.hpp"
 #include <ev.h>
-#include "macroDefinition.h"
+#include "macroDefinition.hpp"
 
 using namespace v8;
 

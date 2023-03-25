@@ -1,7 +1,7 @@
 #include "v8.h"
 #include <string>
-#include "utils.h"
-#include "macroDefinition.h"
+#include "utils.hpp"
+#include "macroDefinition.hpp"
 
 using namespace v8;
 

@@ -1,9 +1,8 @@
 #include "v8.h"
-#include "macroDefinition.h"
-#include "include/commonjs.h"
+#include "macroDefinition.hpp"
+#include "include/commonjs.hpp"
 #include <string>
-#include "../utils/utils.h"
-#include <iostream>
+#include "../utils/utils.hpp"
 
 namespace InternalModule
 {
@@ -35,9 +34,6 @@ namespace InternalModule
             return;
         }
         Local<Function> function = maybeFun.ToLocalChecked();
-        auto aa = function->ToString(context).ToLocalChecked();
-        String::Utf8Value str2(isolate, aa);
-        cout << *str2 << endl;
         args.GetReturnValue().Set(function);
     };
 }

@@ -2,7 +2,7 @@
 #include "v8.h"
 #include <string>
 #include <vector>
-#include "macroDefinition.h"
+#include "macroDefinition.hpp"
 
 namespace InternalModule
 {

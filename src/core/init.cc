@@ -1,11 +1,11 @@
-#include "../utils/utils.h"
-#include "include/init.h"
-#include "include/console.h"
-#include "include/timeUtils.h"
-#include "include/buffer.h"
-#include "include/commonjs.h"
-#include "include/process.h"
-#include "macroDefinition.h"
+#include "../utils/utils.hpp"
+#include "include/init.hpp"
+#include "include/console.hpp"
+#include "include/timeUtils.hpp"
+#include "include/buffer.hpp"
+#include "include/commonjs.hpp"
+#include "include/process.hpp"
+#include "macroDefinition.hpp"
 
 using namespace v8;
 using namespace Utils;

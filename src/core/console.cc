@@ -1,4 +1,4 @@
-#include "include/console.h"
+#include "include/console.hpp"
 #include <iostream>
 
 using namespace v8;

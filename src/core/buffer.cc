@@ -1,8 +1,8 @@
 #include <v8.h>
 #include <cstring>
 #include <iostream>
-#include "macroDefinition.h"
-#include "include/buffer.h"
+#include "macroDefinition.hpp"
+#include "include/buffer.hpp"
 
 using namespace v8;
 

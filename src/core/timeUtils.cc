@@ -1,7 +1,8 @@
 #include <ev.h>
 #include <iostream>
 #include <v8.h>
-#include "include/timeUtils.h"
+#include "include/timeUtils.hpp"
+#include <loopStruct.hpp>
 
 using namespace v8;
 
@@ -15,13 +16,17 @@ namespace InternalModule
         Isolate *isolate = Isolate::GetCurrent();
         Local<Context> context = isolate->GetCurrentContext();
         HandleScope handle_scope(isolate);
+        LoopData *loopData = reinterpret_cast<LoopData *>(watcher->data);
         // 获取参数，即传入的回调函数
         Local<Function> callback =
             Local<Function>::New(isolate, *(reinterpret_cast<Persistent<Function> *>(watcher->data)));
         const MaybeLocal<v8::Value> callResult = callback->Call(context, Null(isolate), 0, nullptr);
 
         callback.Clear();
+        TimeUtils::timeoutPtrMap.erase(loopData->id);
         ev_timer_stop(EV_A_ watcher);
+        delete loopData;
+        delete watcher;
     }
 
     void TimeUtils::setTimeout(const FunctionCallbackInfo<Value> &args)
@@ -39,9 +44,11 @@ namespace InternalModule
         watcher->data = new Persistent<Function>(isolate, callback);
         ev_timer_init(watcher, setTimeoutCallback, timeout / 1000, 0);
 
-        // 保存定时器指针
-        const uint32_t id = TimeUtils::timeoutPtrMap.size() + 1;
+        // 会有安全问题，这个id不是唯一的，js重复调用setTimeout会删除别的定时器
+        const uint64_t id = TimeUtils::timeoutPtrMap.size() + 1;
+        LoopData loopData(id);
         TimeUtils::timeoutPtrMap[id] = watcher;
+        watcher->data = &loopData;
 
         ev_timer_start(EV_DEFAULT_ watcher);
 
@@ -63,7 +70,7 @@ namespace InternalModule
             return;
         }
 
-        uint32_t id = args[0]->NumberValue(context).FromJust();
+        uint64_t id = args[0]->NumberValue(context).FromJust();
         ev_timer *watcher = TimeUtils::timeoutPtrMap[id];
         ev_timer_stop(EV_DEFAULT_ watcher);
         TimeUtils::timeoutPtrMap.erase(id);
@@ -93,8 +100,10 @@ namespace InternalModule
         watcher->data = new Persistent<Function>(isolate, callback);
         ev_timer_init(watcher, setIntervalCallback, timeout / 1000, timeout / 1000);
 
-        const uint32_t id = TimeUtils::internalPtrMap.size() + 1;
+        const uint64_t id = TimeUtils::internalPtrMap.size() + 1;
         TimeUtils::internalPtrMap[id] = watcher;
+        LoopData loopData(id);
+        watcher->data = &loopData;
 
         ev_timer_start(EV_DEFAULT_ watcher);
 
@@ -115,7 +124,7 @@ namespace InternalModule
             TimeUtils::internalPtrMap.clear();
             return;
         }
-        uint32_t id = args[0]->NumberValue(context).FromJust();
+        uint64_t id = args[0]->NumberValue(context).FromJust();
         ev_timer *watcher = TimeUtils::internalPtrMap[id];
         ev_timer_stop(EV_DEFAULT_ watcher);
         TimeUtils::internalPtrMap.erase(id);
