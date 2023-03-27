@@ -9,8 +9,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_definitions(-DV8_COMPRESS_POINTERS)
 
 # 添加库路径
-set(V8_LIB_PATH "lib/v8")
-set(LIBEV_LIB_PATH "lib/libev")
+if(APPLE)
+    set(V8_LIB_PATH "lib/mac/v8")
+    set(LIBEV_LIB_PATH "lib/mac/libev")
+elseif(UNIX)
+    set(V8_LIB_PATH "lib/linux/v8")
+    set(LIBEV_LIB_PATH "lib/linux/libev")
+endif()
+
 set(INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 link_directories(${V8_LIB_PATH})
