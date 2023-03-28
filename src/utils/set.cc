@@ -14,11 +14,21 @@ void Utils::SetModule::setModuleFunction(Isolate *isolate,
               FunctionTemplate::New(isolate, callback));
 }
 
+static void setModuleFunction(Isolate *isolate,
+                              Local<Object> &recv,
+                              const std::string name,
+                              FunctionCallback callback)
+{
+    const Local<Context> context = isolate->GetCurrentContext();
+    recv->Set(context, TO_STRING(isolate, name.c_str()),
+              FunctionTemplate::New(isolate, callback));
+}
+
 // 设置对象的属性，属性为非函数
 void Utils::SetModule::setObjectValue(Isolate *isolate,
                                       Local<Object> &recv,
                                       const std::string name,
-                                      Local<v8::ObjectTemplate> value)
+                                      Local<ObjectTemplate> value)
 {
     const Local<Context> context = isolate->GetCurrentContext();
     recv->Set(context, TO_STRING(isolate, name.c_str()),
@@ -29,7 +39,7 @@ void Utils::SetModule::setObjectValue(Isolate *isolate,
 void Utils::SetModule::setObjectValue(Isolate *isolate,
                                       Local<Object> &recv,
                                       const std::string name,
-                                      Local<v8::Object> value)
+                                      Local<Object> value)
 {
     const Local<Context> context = isolate->GetCurrentContext();
     recv->Set(context, TO_STRING(isolate, name.c_str()), value)

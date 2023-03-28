@@ -52,7 +52,11 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "*.ipp": "cpp",
-        "codecvt": "cpp"
+        "codecvt": "cpp",
+        "condition_variable": "cpp",
+        "future": "cpp",
+        "mutex": "cpp",
+        "any": "cpp"
     },
     "cSpell.words": [
         "EVBREAK",

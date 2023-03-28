@@ -19,7 +19,7 @@ namespace InternalModule
 
         LoopData *loopData = reinterpret_cast<LoopData *>(watcher->data);
         // 获取参数，即传入的回调函数
-        Local<Function> callback = Local<Function>::New(isolate, *loopData->function);
+        Local<Function> callback = loopData->function->Get(isolate);
         const MaybeLocal<Value> callResult = callback->Call(context, Null(isolate), 0, nullptr);
 
         callback.Clear();
